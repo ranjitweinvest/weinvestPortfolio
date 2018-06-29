@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <h1>{{title}}</h1>
+    <h1>{{title}}{{id}}</h1>
 </div>    
 </template>
 
@@ -9,9 +9,13 @@ export default {
  name: 'PortfolioDetails',
   data () {
     return {
-      title: 'PortfolioDetails'
+      title: 'PortfolioDetails',
+      id: null,
     }
-  }
+  },
+  created() {
+    this.id = this.$route.params.id;
+  },
 }
 </script>
 <style>
