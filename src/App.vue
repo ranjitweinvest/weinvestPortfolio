@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div>
     <router-view/>
   </div>
 </template>
@@ -12,5 +11,5 @@ export default {
 </script>
 
 <style lang="sass">
-@import './sass/main.sass'
+  @import './sass/main.sass'
 </style>
