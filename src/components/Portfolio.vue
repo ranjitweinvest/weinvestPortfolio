@@ -9,24 +9,24 @@
 				</div>
 				<div class="card-body col-xs-12">
 					<div class="row">
-						<div class="col-xs-6 cell-text">Volatility</div>
-						<div class="col-xs-6 cell-text">{{item.volatility}}</div>
+						<div class="col-xs-5 cell-text">Volatility</div>
+						<div class="col-xs-7 cell-text">{{item.volatility}}</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 cell-text">1 Month Return</div>
-						<div class="col-xs-6 cell-text">1 Month Return</div>
+						<div class="col-xs-5 cell-text">1 Month Return</div>
+						<div class="col-xs-7 cell-text">1 Month Return</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 cell-text">Mean Return</div>
-						<div class="col-xs-6 cell-text">{{item.mean_return}}</div>
+						<div class="col-xs-5 cell-text">Mean Return</div>
+						<div class="col-xs-7 cell-text">{{item.mean_return}}</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 cell-text">Minimum Investment</div>
-						<div class="col-xs-6 cell-text">Minimum Investment</div>
+						<div class="col-xs-5 cell-text">Min Investment</div>
+						<div class="col-xs-7 cell-text">Min Investment</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6 cell-text">Eligibility</div>
-						<div class="col-xs-6 cell-text">Eligibility</div>
+						<div class="col-xs-5 cell-text">Eligibility</div>
+						<div class="col-xs-7 cell-text">Available for all investor</div>
 					</div>
 					<div class="row">
 						<router-link :to="{ name: 'PortfolioDetails', params: { id: item.id }}" class="col-xs-12 btn btn-danger">Explore Investment Idea</router-link to="/foo">

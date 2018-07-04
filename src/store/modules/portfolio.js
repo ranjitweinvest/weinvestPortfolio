@@ -256,9 +256,13 @@ const state = {
   // actions
   const actions = {
     portfolioDetailsAction({ commit, state }, param_id){
-      let result = state.portfolios.filter((v,k)=>{
+      let data = state.portfolios.filter((v,k)=>{
         return (v.id == param_id)
       });
+       data = (data && data[0] && data[0]['constituents'])? data[0]['constituents'] :[];
+      let result = data.map((v,k)=> {
+        return Object.assign({},{"weight":v.weight,"model_weight":(v.model_weight)?v.model_weight:v.weight}, {...v.instrument})
+        });
       commit('setDetailPortfolios', {
         data:result
       });
