@@ -3,12 +3,12 @@ const state = {
       {
       "id": 1,
       "name": "HONGKONG TECHNOLOGY",
-      "volatility": "26.8%",
-      "mean_return": "2.96%",
+      "volatility": "26.8",
+      "mean_return": "2.96",
       "currency": "SGD",
       "constituents": [
         {
-          "weight": "3%",
+          "weight": "3",
           "instrument": {
             "id": 1,
             "name": "CSX corp",
@@ -16,7 +16,7 @@ const state = {
           }
         },
         {
-          "weight": "17%",
+          "weight": "17",
           "instrument": {
             "id": 2,
             "name": "cummins Inc",
@@ -24,7 +24,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 3,
             "name": "Eaton Corp PLC",
@@ -32,7 +32,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 4,
             "name": "Fedx corp",
@@ -40,7 +40,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 5,
             "name": "Haris corp",
@@ -48,7 +48,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 6,
             "name": "Norfolk Southern Corp",
@@ -56,7 +56,7 @@ const state = {
           }
         },
         {
-          "weight": "5%",
+          "weight": "5",
           "instrument": {
             "id": 7,
             "name": "General Dynamics",
@@ -64,7 +64,7 @@ const state = {
           }
         },
         {
-          "weight": "15%",
+          "weight": "15",
           "instrument": {
             "id": 8,
             "name": "hal",
@@ -72,7 +72,7 @@ const state = {
           }
         },
         {
-          "weight": "20%",
+          "weight": "20",
           "instrument": {
             "id": 10,
             "name": "USD CASH",
@@ -83,12 +83,12 @@ const state = {
    },{
       "id": 2,
       "name": "Hong kong/China Technology",
-      "volatility": "28.01%",
-      "mean_return": "24.11%",
+      "volatility": "28.01",
+      "mean_return": "24.11",
       "currency": "SGD",
       "constituents": [
         {
-          "weight": "3%",
+          "weight": "3",
           "instrument": {
             "id": 1,
             "name": "CSX corp",
@@ -96,7 +96,7 @@ const state = {
           }
         },
         {
-          "weight": "17%",
+          "weight": "17",
           "instrument": {
             "id": 2,
             "name": "cummins Inc",
@@ -104,7 +104,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 3,
             "name": "Eaton Corp PLC",
@@ -112,7 +112,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 4,
             "name": "Fedx corp",
@@ -120,7 +120,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 5,
             "name": "Haris corp",
@@ -128,7 +128,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 6,
             "name": "Norfolk Southern Corp",
@@ -136,7 +136,7 @@ const state = {
           }
         },
         {
-          "weight": "5%",
+          "weight": "5",
           "instrument": {
             "id": 7,
             "name": "General Dynamics",
@@ -144,7 +144,7 @@ const state = {
           }
         },
         {
-          "weight": "15%",
+          "weight": "15",
           "instrument": {
             "id": 8,
             "name": "hal",
@@ -152,7 +152,7 @@ const state = {
           }
         },
         {
-          "weight": "20%",
+          "weight": "20",
           "instrument": {
             "id": 10,
             "name": "USD CASH",
@@ -163,12 +163,12 @@ const state = {
   },{
       "id": 3,
       "name": "US TECH LEADERS",
-      "volatility": "19.84%",
-      "mean_return": "26.64%",
+      "volatility": "19.84",
+      "mean_return": "26.64",
       "currency": "SGD",
       "constituents": [
         {
-          "weight": "3%",
+          "weight": "3",
           "instrument": {
             "id": 1,
             "name": "CSX corp",
@@ -176,7 +176,7 @@ const state = {
           }
         },
         {
-          "weight": "17%",
+          "weight": "17",
           "instrument": {
             "id": 2,
             "name": "cummins Inc",
@@ -184,7 +184,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 3,
             "name": "Eaton Corp PLC",
@@ -192,7 +192,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 4,
             "name": "Fedx corp",
@@ -200,7 +200,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 5,
             "name": "Haris corp",
@@ -208,7 +208,7 @@ const state = {
           }
         },
         {
-          "weight": "10%",
+          "weight": "10",
           "instrument": {
             "id": 6,
             "name": "Norfolk Southern Corp",
@@ -216,7 +216,7 @@ const state = {
           }
         },
         {
-          "weight": "5%",
+          "weight": "5",
           "instrument": {
             "id": 7,
             "name": "General Dynamics",
@@ -224,7 +224,7 @@ const state = {
           }
         },
         {
-          "weight": "15%",
+          "weight": "15",
           "instrument": {
             "id": 8,
             "name": "hal",
@@ -232,7 +232,7 @@ const state = {
           }
         },
         {
-          "weight": "20%",
+          "weight": "20",
           "instrument": {
             "id": 10,
             "name": "USD CASH",

@@ -10,7 +10,7 @@
 				<div class="card-body col-xs-12">
 					<div class="row">
 						<div class="col-xs-5 cell-text">Volatility</div>
-						<div class="col-xs-7 cell-text">{{item.volatility}}</div>
+						<div class="col-xs-7 cell-text">{{item.volatility}}%</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-5 cell-text">1 Month Return</div>
@@ -18,7 +18,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-5 cell-text">Mean Return</div>
-						<div class="col-xs-7 cell-text">{{item.mean_return}}</div>
+						<div class="col-xs-7 cell-text">{{item.mean_return}}%</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-5 cell-text">Min Investment</div>
