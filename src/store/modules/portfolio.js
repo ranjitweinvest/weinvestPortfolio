@@ -88,7 +88,7 @@ const state = {
       "currency": "SGD",
       "constituents": [
         {
-          "weight": "3",
+          "weight": "30",
           "instrument": {
             "id": 1,
             "name": "CSX corp",
@@ -96,7 +96,7 @@ const state = {
           }
         },
         {
-          "weight": "17",
+          "weight": "10",
           "instrument": {
             "id": 2,
             "name": "cummins Inc",
@@ -104,59 +104,11 @@ const state = {
           }
         },
         {
-          "weight": "10",
+          "weight": "60",
           "instrument": {
             "id": 3,
             "name": "Eaton Corp PLC",
             "type": "Equity"
-          }
-        },
-        {
-          "weight": "10",
-          "instrument": {
-            "id": 4,
-            "name": "Fedx corp",
-            "type": "Equity"
-          }
-        },
-        {
-          "weight": "10",
-          "instrument": {
-            "id": 5,
-            "name": "Haris corp",
-            "type": "Equity"
-          }
-        },
-        {
-          "weight": "10",
-          "instrument": {
-            "id": 6,
-            "name": "Norfolk Southern Corp",
-            "type": "Bond"
-          }
-        },
-        {
-          "weight": "5",
-          "instrument": {
-            "id": 7,
-            "name": "General Dynamics",
-            "type": "Bond"
-          }
-        },
-        {
-          "weight": "15",
-          "instrument": {
-            "id": 8,
-            "name": "hal",
-            "type": "Bond"
-          }
-        },
-        {
-          "weight": "20",
-          "instrument": {
-            "id": 10,
-            "name": "USD CASH",
-            "type": "CASH"
           }
         }
       ]
@@ -266,6 +218,12 @@ const state = {
       commit('setDetailPortfolios', {
         data:result
       });
+    },
+    updateWeightAction({ commit, state }, param){
+      commit('updateWeightMutation', param);
+    },
+    updateLockAction({ commit, state }, param){
+      commit('updateLockMutation', param);      
     }
   }
   
@@ -274,6 +232,43 @@ const state = {
     setDetailPortfolios (state, {data}) {
       state.detailPortfolios = data;
     },
+    updateWeightMutation (state, param) {
+      let {router_id, value, data:{weight, model_weight, id}} = param;
+      let diff = Number(model_weight) - ((value) ? parseFloat(value) :0);
+      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
+      let constituents = changeData[0]['constituents'].map((v,k)=>{
+        if(id == v.instrument.id){
+          return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false ,model_weight:(v.model_weight)?v.model_weight:v.weight, weight:value})
+        }else{  
+        return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100- parseInt(model_weight))).toFixed(2) })
+      }
+      })
+      let result = state.portfolios.map((v,k)=>{
+        if(v.id == router_id){
+          return Object.assign({},{...v}, {"constituents":constituents})  
+        }
+        return v
+      })
+      state.portfolios = result;
+      let result_constituents = state.detailPortfolios.map((v,k)=> {
+        let value = constituents[k]
+        return Object.assign({},{...value.instrument},{"weight":value.weight,"model_weight":(value.model_weight)?value.model_weight:value.weight})
+      });
+      state.detailPortfolios =  result_constituents
+    },
+    updateLockMutation (state, param) {
+      let {data:{id},type} = param;
+
+      let result = state.detailPortfolios.map((v,k)=>{
+        if(id == v.id){
+          return Object.assign({},{...v},{lock:type});
+        }
+        return v;
+      })
+
+      state.detailPortfolios = result;
+
+    }
   }
   
   export default {
