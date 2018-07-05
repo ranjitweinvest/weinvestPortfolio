@@ -24,7 +24,7 @@
             <tbody v-for="(im) in item">
                 <tr>
                     <td><a>{{im.name}}</a></td>
-                    <td><button v-show="!im.lock" @click="updateLock(im,true)"><i class="fas fa-lock-open"></i></button><button v-show="im.lock" @click="updateLock(im,false)"><i class="fas fa-lock"></i></button></td>
+                    <td><button v-show="im.lock" @click="updateLock(im,false)"><i class="fas fa-lock-open"></i></button><button v-show="!im.lock" @click="updateLock(im,true)"><i class="fas fa-lock"></i></button></td>
                     <td>{{im.model_weight}}%</td>
                     <td>
                       <button v-show="!im.lock" :disabled="im.weight > 99" @click="updateValue(im, 'inc')"><i class="fas fa-plus-square"></i></button>
@@ -52,14 +52,21 @@ export default {
    computed: {
       ...mapGetters('portfolio', {
         getDetailPortfolios: 'getDetailPortfolios',
+        getPortfolios: 'getPortfolios',
+        
         }),
       myConstituents: {
         get: function() {
-          let data = this.getDetailPortfolios
-          let result =  _.groupBy(data, 'type');
-          this.localPortfolioDetails = result;
-          return result;
-        },
+          let data = this.getPortfolios.filter((v,k)=>{
+                return (v.id == this.$route.params.id)
+          });
+          data = (data && data[0] && data[0]['constituents'])? data[0]['constituents'] :[];
+          let formeted_data = data.map((v,k)=> {
+            return Object.assign({},{...v.instrument},{"weight":v.weight,"model_weight":(v.model_weight)?v.model_weight:v.weight, lock:(v.lock)?v.lock:false})
+          });
+          let result =  _.groupBy(formeted_data, 'type');
+            return result;
+        }
       },
     },
     methods: {
@@ -88,7 +95,8 @@ export default {
         }
       },
       updateLock(data,type){
-        this.updateLockAction({data,type});
+        let router_id = this.$route.params.id; 
+        this.updateLockAction({data, type, router_id});
       },
      isNumber(evt) {
        evt = (evt) ? evt : window.event;
@@ -107,9 +115,6 @@ export default {
          return parseFloat(result.toPrecision(2));
       },
     },
-  beforeMount(){
-    this.portfolioDetailsAction(this.$route.params.id);
-  },
 }
 </script>
 <style>

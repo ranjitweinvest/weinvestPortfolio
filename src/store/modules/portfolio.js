@@ -238,9 +238,9 @@ const state = {
       let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
       let constituents = changeData[0]['constituents'].map((v,k)=>{
         if(id == v.instrument.id){
-          return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false ,model_weight:(v.model_weight)?v.model_weight:v.weight, weight:value})
+          return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false ,model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? value : v.weight })
         }else{  
-        return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100- parseInt(model_weight))).toFixed(2) })
+        return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100- parseInt(model_weight))).toFixed(2): v.weight })
       }
       })
       let result = state.portfolios.map((v,k)=>{
@@ -250,23 +250,23 @@ const state = {
         return v
       })
       state.portfolios = result;
-      let result_constituents = state.detailPortfolios.map((v,k)=> {
-        let value = constituents[k]
-        return Object.assign({},{...value.instrument},{"weight":value.weight,"model_weight":(value.model_weight)?value.model_weight:value.weight})
-      });
-      state.detailPortfolios =  result_constituents
     },
     updateLockMutation (state, param) {
-      let {data:{id},type} = param;
-
-      let result = state.detailPortfolios.map((v,k)=>{
-        if(id == v.id){
-          return Object.assign({},{...v},{lock:type});
+      let {data:{id}, type, router_id} = param;
+      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
+      let constituents = changeData[0]['constituents'].map((v,k)=>{
+        if(id == v.instrument.id){
+           return Object.assign({},{...v},{lock:type});
         }
         return v;
       })
-
-      state.detailPortfolios = result;
+      let result = state.portfolios.map((v,k)=>{
+        if(v.id == router_id){
+          return Object.assign({},{...v}, {"constituents":constituents})  
+        }
+        return v
+      });
+      state.portfolios = result;
 
     }
   }
