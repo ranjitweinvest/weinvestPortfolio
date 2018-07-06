@@ -7,8 +7,8 @@
                 <tr>
                     <th>Category/Stock</th>
                     <th></th>
-                    <th>Model Weight({{getTotalPercent(this.getDetailPortfolios, 'model_weight')}}%)</th>
-                    <th>Weight({{getTotalPercent(this.getDetailPortfolios, 'weight')}}%)</th>
+                    <th>Model Weight({{getTotalPercent(this.modifyedPortfolio, 'model_weight')}}%)</th>
+                    <th>Weight({{getTotalPercent(this.modifyedPortfolio, 'weight')}}%)</th>
                 </tr>
             </thead>
         </table>
@@ -36,7 +36,6 @@
      </div>
 </div>    
 </template>
-
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import _ from 'lodash'
@@ -55,16 +54,22 @@ export default {
         getPortfolios: 'getPortfolios',
         
         }),
-      myConstituents: {
+      modifyedPortfolio:{
         get: function() {
-          let data = this.getPortfolios.filter((v,k)=>{
+           let data = this.getPortfolios.filter((v,k)=>{
                 return (v.id == this.$route.params.id)
           });
           data = (data && data[0] && data[0]['constituents'])? data[0]['constituents'] :[];
-          let formeted_data = data.map((v,k)=> {
+          let modifyedPortfolio = data.map((v,k)=> {
             return Object.assign({},{...v.instrument},{"weight":v.weight,"model_weight":(v.model_weight)?v.model_weight:v.weight, lock:(v.lock)?v.lock:false})
           });
-          let result =  _.groupBy(formeted_data, 'type');
+          return modifyedPortfolio;
+
+        }
+      },  
+      myConstituents: {
+        get: function() {
+          let result =  _.groupBy(this.modifyedPortfolio, 'type');
             return result;
         }
       },

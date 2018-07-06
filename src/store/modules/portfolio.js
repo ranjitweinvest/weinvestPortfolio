@@ -234,13 +234,21 @@ const state = {
     },
     updateWeightMutation (state, param) {
       let {router_id, value, data:{weight, model_weight, id}} = param;
+     
       let diff = Number(model_weight) - ((value) ? parseFloat(value) :0);
       let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
+      let locked_modal_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
+          if(o.lock){
+          return parseInt((o.model_weight)?o.model_weight:o.weight);
+          }
+        });
+         locked_modal_weight = (locked_modal_weight)? locked_modal_weight :0;
+         console.log("locked_modal_weight", locked_modal_weight)
       let constituents = changeData[0]['constituents'].map((v,k)=>{
         if(id == v.instrument.id){
           return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false ,model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? value : v.weight })
         }else{  
-        return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100- parseInt(model_weight))).toFixed(2): v.weight })
+        return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100 - (parseInt(model_weight) + locked_modal_weight) )).toFixed(2): v.weight })
       }
       })
       let result = state.portfolios.map((v,k)=>{
