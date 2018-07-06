@@ -44,13 +44,11 @@ export default {
  name: 'PortfolioDetails',
   data () {
     return {
-      title: 'Portfolio Constituents',
-      localPortfolioDetails: [],      
+      title: 'Portfolio Constituents',    
     }
   },
    computed: {
       ...mapGetters('portfolio', {
-        getDetailPortfolios: 'getDetailPortfolios',
         getPortfolios: 'getPortfolios',
         
         }),
@@ -75,8 +73,7 @@ export default {
       },
     },
     methods: {
-      ...mapActions('portfolio',{
-        portfolioDetailsAction:      'portfolioDetailsAction',       
+      ...mapActions('portfolio',{      
         updateWeightAction:      'updateWeightAction',       
         updateLockAction:      'updateLockAction',       
       }),
