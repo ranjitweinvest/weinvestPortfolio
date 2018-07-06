@@ -2,7 +2,8 @@
 <div class="container">
     <h1>{{title}}</h1>
     <div>
-      <table class="table" >
+      <button style="margin:5px;" class="btn btn-primary pull-right" @click="rebalanceConstituents()">Rebalance</button>
+      <table class="table">
           <thead class="thead-main-title">
                 <tr>
                     <th>Category/Stock</th>
@@ -23,7 +24,7 @@
             </thead>
             <tbody v-for="(im) in item">
                 <tr>
-                    <td><a>{{im.name}}</a></td>
+                    <td><button @click="delectConstituent(im)"><i class="fas fa-trash-alt"></i></button><a>{{im.name}}</a></td>
                     <td><button v-show="im.lock" @click="updateLock(im,false)"><i class="fas fa-lock-open"></i></button><button v-show="!im.lock" @click="updateLock(im,true)"><i class="fas fa-lock"></i></button></td>
                     <td>{{im.model_weight}}%</td>
                     <td>
@@ -75,7 +76,9 @@ export default {
     methods: {
       ...mapActions('portfolio',{      
         updateWeightAction:      'updateWeightAction',       
-        updateLockAction:      'updateLockAction',       
+        updateLockAction:      'updateLockAction',   
+        deletConstituentsAction:      'deletConstituentsAction',   
+        rebalanceConstituentsAction:      'rebalanceConstituentsAction',   
       }),
       handleChange(evt, data){
         let {value} = evt.target;
@@ -95,6 +98,14 @@ export default {
         }else{
         this.updateWeightAction({router_id, value: (parseInt(weight)-1), data});                    
         }
+      },
+      delectConstituent(data){
+        let router_id = this.$route.params.id; 
+        this.deletConstituentsAction({data, router_id});
+      },
+      rebalanceConstituents(){
+        let router_id = this.$route.params.id;         
+        this.rebalanceConstituentsAction({router_id});        
       },
       updateLock(data,type){
         let router_id = this.$route.params.id; 
