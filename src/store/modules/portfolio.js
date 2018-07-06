@@ -229,7 +229,7 @@ const state = {
       let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
       let locked_modal_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
           if(o.lock){
-          return parseFloat((o.weight)?o.weight:o.model_weight);
+          return parseFloat((o.model_weight)?o.model_weight:o.weight);
           }
         });
          locked_modal_weight = (locked_modal_weight)? locked_modal_weight :0;
@@ -284,9 +284,25 @@ const state = {
     rebalanceConstituentsMutation(state, param) {
       let {router_id} = param;
       let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
-     let constituents = _.remove(changeData[0]['constituents'], function(v) {
-        return !(id == v.instrument.id)
+      let total_modal_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
+         return parseFloat((o.model_weight)?o.model_weight:o.weight);
       });
+      let total_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
+         return parseFloat((o.weight)?o.weight:o.model_weight);
+      });
+
+      console.log("total_modal_weight", total_modal_weight);
+      let constituents = changeData[0]['constituents'].map((v,k)=>{
+        if(!v.lock){
+           return Object.assign({},{...v},
+            {
+            model_weight:(Math.round(total_modal_weight) !== 100) ? Number(Number((v.model_weight)?v.model_weight:v.weight) + (100 - total_modal_weight)/ total_modal_weight * Number((v.model_weight)?v.model_weight:v.weight)).toFixed(2): (v.model_weight)?v.model_weight:v.weight,
+            weight: (Math.round(total_weight) !== 100) ? Number(Number(v.weight) + (100 - total_weight)/ total_weight * Number(v.weight)).toFixed(2): Number(v.weight)
+            }); 
+          }else{
+        return Object.assign({},{...v}, { model_weight:(v.model_weight)?v.model_weight:v.weight, weight: v.weight });            
+          }     
+      })
       let result = state.portfolios.map((v,k)=>{
         if(v.id == router_id){
           return Object.assign({},{...v}, {"constituents":constituents})  

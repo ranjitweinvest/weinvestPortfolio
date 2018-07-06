@@ -83,18 +83,20 @@ export default {
       handleChange(evt, data){
         let {value} = evt.target;
         let router_id = this.$route.params.id;        
-        if(parseFloat(value) >= 0 && parseFloat(value) <= 100){
+         console.log("value",evt.target.value);
+        
+        if(value == "" || parseFloat(value) <= 100){
         this.updateWeightAction({router_id, value, data});          
         }else{
           evt.preventDefault();
-          alert("value should be between 0 to 100");
+          //alert("value should be between 0 to 100");
         }
       },
       updateValue(data, type){
         let {weight} = data
         let router_id = this.$route.params.id;                
         if(type == "inc"){
-        this.updateWeightAction({router_id, value: (parseInt(weight)+1), data});          
+        this.updateWeightAction({router_id, value: (parseInt((weight)? (weight): 0)+1), data});          
         }else{
         this.updateWeightAction({router_id, value: (parseInt(weight)-1), data});                    
         }
@@ -114,7 +116,6 @@ export default {
      isNumber(evt) {
        evt = (evt) ? evt : window.event;
       var charCode = (evt.which) ? evt.which : evt.keyCode;
-      console.log("charCode",charCode);
       if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {      
         evt.preventDefault();
       }else {
