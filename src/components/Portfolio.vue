@@ -1,6 +1,6 @@
 <template>
  <div class="container" >
-  <h1>{{title}}</h1>	 
+  <h1 style="color:red;">{{title}}</h1>	 
 		<div class="col-md-4" v-for="(item, index) in getPortfolios">
 			<div class="card">
 				<div class="card-header">

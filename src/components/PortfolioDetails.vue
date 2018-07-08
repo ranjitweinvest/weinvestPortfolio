@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <h1>{{title}}</h1>
+    <h1 style="color:red;">{{title}}</h1>
     <div>
       <button style="margin:5px;" class="btn btn-primary pull-right" @click="rebalanceConstituents()">Rebalance</button>
       <table class="table">
