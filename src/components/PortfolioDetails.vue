@@ -29,7 +29,7 @@
                     <td>{{im.model_weight}}%</td>
                     <td>
                       <button v-show="!im.lock" :disabled="im.weight > 99" @click="updateValue(im, 'inc')"><i class="fas fa-plus-square"></i></button>
-                      <input :disabled="im.lock" :value="im.weight" @keypress="isNumber($event)" @input="handleChange($event, im)">
+                      <input v-on="inputListeners" :disabled="im.lock" :value="im.weight" @keypress="isNumber($event)" @input="handleChange($event, im)">
                       <button v-show="!im.lock" :disabled="im.weight < 1" @click="updateValue(im, 'dec')"><i class="fas fa-minus-square" ></i></button> %</td>
                 </tr>
             </tbody>
@@ -53,6 +53,18 @@ export default {
         getPortfolios: 'getPortfolios',
         
         }),
+          inputListeners: function () {
+      var vm = this
+      return Object.assign({},
+        this.$listeners,
+        {
+          input: function (event) {
+          // checking listeners funtion to restrict  
+          //  vm.$emit('input', 100)
+          }
+        }
+      )
+    },
       modifyedPortfolio:{
         get: function() {
            let data = this.getPortfolios.filter((v,k)=>{
@@ -82,9 +94,7 @@ export default {
       }),
       handleChange(evt, data){
         let {value} = evt.target;
-        let router_id = this.$route.params.id;        
-         console.log("value",evt.target.value);
-        
+        let router_id = this.$route.params.id;  
         if(value == "" || parseFloat(value) <= 100){
         this.updateWeightAction({router_id, value, data});          
         }else{
