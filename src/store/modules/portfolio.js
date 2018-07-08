@@ -290,8 +290,6 @@ const state = {
       let total_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
          return parseFloat((o.weight)?o.weight:o.model_weight);
       });
-
-      console.log("total_modal_weight", total_modal_weight);
       let constituents = changeData[0]['constituents'].map((v,k)=>{
         if(!v.lock){
            return Object.assign({},{...v},
