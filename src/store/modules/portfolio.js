@@ -240,13 +240,8 @@ const state = {
         return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100 - (parseInt(model_weight) + locked_modal_weight) )).toFixed(2): v.weight })
       }
       })
-      let result = state.portfolios.map((v,k)=>{
-        if(v.id == router_id){
-          return Object.assign({},{...v}, {"constituents":constituents})  
-        }
-        return v
-      })
-      state.portfolios = result;
+      let result = updateResultPortfolios(state,{constituents, router_id})
+     state.portfolios = result;;     
     },
     updateLockMutation (state, param) {
       let {data:{id}, type, router_id} = param;
@@ -257,14 +252,8 @@ const state = {
         }
         return v;
       })
-      let result = state.portfolios.map((v,k)=>{
-        if(v.id == router_id){
-          return Object.assign({},{...v}, {"constituents":constituents})  
-        }
-        return v
-      });
-      state.portfolios = result;
-
+      let result = updateResultPortfolios(state,{constituents, router_id})
+     state.portfolios = result;
     },
     deletConstituentsMutation(state, param) {
       let {data:{id}, router_id} = param;
@@ -272,13 +261,8 @@ const state = {
      let constituents = _.remove(changeData[0]['constituents'], function(v) {
         return !(id == v.instrument.id)
       });
-      let result = state.portfolios.map((v,k)=>{
-        if(v.id == router_id){
-          return Object.assign({},{...v}, {"constituents":constituents})  
-        }
-        return v
-      });
-      state.portfolios = result;
+      let result = updateResultPortfolios(state,{constituents, router_id})
+     state.portfolios = result;
 
     },
     rebalanceConstituentsMutation(state, param) {
@@ -301,14 +285,19 @@ const state = {
         return Object.assign({},{...v}, { model_weight:(v.model_weight)?v.model_weight:v.weight, weight: v.weight });            
           }     
       })
-      let result = state.portfolios.map((v,k)=>{
-        if(v.id == router_id){
-          return Object.assign({},{...v}, {"constituents":constituents})  
-        }
-        return v
-      });
-      state.portfolios = result;
+      let result = updateResultPortfolios(state,{constituents, router_id})
+     state.portfolios = result;
     },
+  }
+
+  const updateResultPortfolios = (state, {constituents, router_id}) => {
+    let result = state.portfolios.map((v,k)=>{
+      if(v.id == router_id){
+        return Object.assign({},{...v}, {"constituents":constituents})  
+      }
+      return v
+    });
+    return result;
   }
   
   export default {
