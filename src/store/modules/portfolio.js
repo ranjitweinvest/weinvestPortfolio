@@ -226,14 +226,14 @@ const state = {
     updateWeightMutation (state, param) {
       let {router_id, value, data:{weight, model_weight, id}} = param;
       let diff = Number(model_weight) - ((value) ? parseFloat(value) :0);
-      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
-      let locked_modal_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
+      let getConstituents = getConstituentsData(state,{router_id});
+      let locked_modal_weight =  _.sumBy(getConstituents, function(o) {
           if(o.lock){
           return parseFloat((o.model_weight)?o.model_weight:o.weight);
           }
         });
          locked_modal_weight = (locked_modal_weight)? locked_modal_weight :0;
-      let constituents = changeData[0]['constituents'].map((v,k)=>{
+      let constituents = getConstituents.map((v,k)=>{
         if(id == v.instrument.id){
           return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false ,model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? value : v.weight })
         }else{  
@@ -245,8 +245,8 @@ const state = {
     },
     updateLockMutation (state, param) {
       let {data:{id}, type, router_id} = param;
-      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
-      let constituents = changeData[0]['constituents'].map((v,k)=>{
+      let getConstituents = getConstituentsData(state,{router_id});
+      let constituents = getConstituents.map((v,k)=>{
         if(id == v.instrument.id){
            return Object.assign({},{...v},{lock:type});
         }
@@ -256,9 +256,9 @@ const state = {
      state.portfolios = result;
     },
     deletConstituentsMutation(state, param) {
-      let {data:{id}, router_id} = param;
-      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
-     let constituents = _.remove(changeData[0]['constituents'], function(v) {
+      let {data:{id}, router_id} = param;   
+      let getConstituents = getConstituentsData(state,{router_id});
+     let constituents = _.remove(getConstituents, function(v) {
         return !(id == v.instrument.id)
       });
       let result = updateResultPortfolios(state,{constituents, router_id})
@@ -267,14 +267,14 @@ const state = {
     },
     rebalanceConstituentsMutation(state, param) {
       let {router_id} = param;
-      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
-      let total_modal_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
+      let getConstituents = getConstituentsData(state,{router_id});
+      let total_modal_weight =  _.sumBy(getConstituents, function(o) {
          return parseFloat((o.model_weight)?o.model_weight:o.weight);
       });
-      let total_weight =  _.sumBy(changeData[0]['constituents'], function(o) {
+      let total_weight =  _.sumBy(getConstituents, function(o) {
          return parseFloat((o.weight)?o.weight:o.model_weight);
       });
-      let constituents = changeData[0]['constituents'].map((v,k)=>{
+      let constituents = getConstituents.map((v,k)=>{
         if(!v.lock){
            return Object.assign({},{...v},
             {
@@ -289,6 +289,11 @@ const state = {
      state.portfolios = result;
     },
   }
+
+  const getConstituentsData = (state, {router_id}) => {
+    let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
+    return (changeData[0]['constituents'] && changeData[0]['constituents'].length) ? changeData[0]['constituents'] :[]
+  }  
 
   const updateResultPortfolios = (state, {constituents, router_id}) => {
     let result = state.portfolios.map((v,k)=>{
