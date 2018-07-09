@@ -226,7 +226,7 @@ const state = {
     updateWeightMutation (state, param) {
       let {router_id, value, data:{weight, model_weight, id}} = param;
       let diff = Number(model_weight) - ((value) ? parseFloat(value) :0);
-      let getConstituents = getConstituentsData(state,{router_id});
+      let getConstituents = common.getConstituentsData(state,{router_id});
       let locked_modal_weight =  _.sumBy(getConstituents, function(o) {
           if(o.lock){
           return parseFloat((o.model_weight)?o.model_weight:o.weight);
@@ -240,34 +240,34 @@ const state = {
         return Object.assign({},{...v}, {lock:(v.lock)? v.lock :false, model_weight:(v.model_weight)?v.model_weight:v.weight, weight:(!v.lock) ? Number(Number((v.model_weight)?v.model_weight:v.weight)  + (diff * Number((v.model_weight)?v.model_weight:v.weight)) / (100 - (parseInt(model_weight) + locked_modal_weight) )).toFixed(2): v.weight })
       }
       })
-      let result = updateResultPortfolios(state,{constituents, router_id})
+      let result = common.updateResultPortfolios(state,{constituents, router_id})
      state.portfolios = result;;     
     },
     updateLockMutation (state, param) {
       let {data:{id}, type, router_id} = param;
-      let getConstituents = getConstituentsData(state,{router_id});
+      let getConstituents = common.getConstituentsData(state,{router_id});
       let constituents = getConstituents.map((v,k)=>{
         if(id == v.instrument.id){
            return Object.assign({},{...v},{lock:type});
         }
         return v;
       })
-      let result = updateResultPortfolios(state,{constituents, router_id})
+      let result = common.updateResultPortfolios(state,{constituents, router_id})
      state.portfolios = result;
     },
     deletConstituentsMutation(state, param) {
       let {data:{id}, router_id} = param;   
-      let getConstituents = getConstituentsData(state,{router_id});
+      let getConstituents = common.getConstituentsData(state,{router_id});
      let constituents = _.remove(getConstituents, function(v) {
         return !(id == v.instrument.id)
       });
-      let result = updateResultPortfolios(state,{constituents, router_id})
+      let result = common.updateResultPortfolios(state,{constituents, router_id})
      state.portfolios = result;
 
     },
     rebalanceConstituentsMutation(state, param) {
       let {router_id} = param;
-      let getConstituents = getConstituentsData(state,{router_id});
+      let getConstituents = common.getConstituentsData(state,{router_id});
       let total_modal_weight =  _.sumBy(getConstituents, function(o) {
          return parseFloat((o.model_weight)?o.model_weight:o.weight);
       });
@@ -285,26 +285,28 @@ const state = {
         return Object.assign({},{...v}, { model_weight:(v.model_weight)?v.model_weight:v.weight, weight: v.weight });            
           }     
       })
-      let result = updateResultPortfolios(state,{constituents, router_id})
+      let result = common.updateResultPortfolios(state,{constituents, router_id})
      state.portfolios = result;
     },
   }
 
-  const getConstituentsData = (state, {router_id}) => {
-    let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
-    return (changeData[0]['constituents'] && changeData[0]['constituents'].length) ? changeData[0]['constituents'] :[]
-  }  
-
-  const updateResultPortfolios = (state, {constituents, router_id}) => {
-    let result = state.portfolios.map((v,k)=>{
-      if(v.id == router_id){
-        return Object.assign({},{...v}, {"constituents":constituents})  
-      }
-      return v
-    });
-    return result;
+  // common methods
+  const common = {
+     getConstituentsData (state, {router_id}) {
+      let changeData = state.portfolios.filter((v,k)=> (v.id == router_id));
+      return (changeData[0]['constituents'] && changeData[0]['constituents'].length) ? changeData[0]['constituents'] :[]
+    },
+     updateResultPortfolios (state, {constituents, router_id}) {
+      let result = state.portfolios.map((v,k)=>{
+        if(v.id == router_id){
+          return Object.assign({},{...v}, {"constituents":constituents})  
+        }
+        return v
+      });
+      return result;
+    }
   }
-  
+
   export default {
     namespaced: true,
     state,
