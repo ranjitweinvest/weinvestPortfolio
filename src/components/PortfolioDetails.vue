@@ -17,7 +17,7 @@
             <thead class="thead-body-title">
                 <tr>
                     <th><div class="thead-body-title-head"></div>{{key}}</th>
-                    <th>Add {{key}}</th>
+                    <th></th>
                     <th>{{getTotalPercent(item, 'model_weight')}}%</th>
                     <th>{{getTotalPercent(item, 'weight')}}%</th>
                 </tr>
