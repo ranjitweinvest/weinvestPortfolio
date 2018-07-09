@@ -1,7 +1,7 @@
 <template>
 <div class="container">
-    <h1 style="color:red;">{{title}}</h1>
     <div>
+      <h1 class="main-title">{{title}}</h1>
       <button style="margin:5px;" class="btn btn-primary pull-right" @click="rebalanceConstituents()">Rebalance</button>
       <table class="table">
           <thead class="thead-main-title">
@@ -141,5 +141,5 @@ export default {
     },
 }
 </script>
-<style>
+<style> 
 </style>
