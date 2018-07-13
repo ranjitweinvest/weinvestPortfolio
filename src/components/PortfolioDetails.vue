@@ -29,7 +29,7 @@
                     <td>{{im.model_weight}}%</td>
                     <td>
                       <button v-show="!im.lock" :disabled="im.weight > 99" @click="updateValue(im, 'inc')"><i class="fas fa-plus-square"></i></button>
-                      <input v-on="inputListeners" :disabled="im.lock" :value="im.weight" @keypress="isNumber($event)" @input="handleChange($event, im)">
+                      <input :disabled="im.lock" :value="im.weight" @keypress="onkeypress($event)" @input="handleInput($event, im)" />
                       <button v-show="!im.lock" :disabled="im.weight < 1" @click="updateValue(im, 'dec')"><i class="fas fa-minus-square" ></i></button> %</td>
                 </tr>
             </tbody>
@@ -51,20 +51,7 @@ export default {
    computed: {
       ...mapGetters('portfolio', {
         getPortfolios: 'getPortfolios',
-        
         }),
-          inputListeners: function () {
-      var vm = this
-      return Object.assign({},
-        this.$listeners,
-        {
-          input: function (event) {
-          // checking listeners funtion to restrict  
-          //  vm.$emit('input', 100)
-          }
-        }
-      )
-    },
       modifyedPortfolio:{
         get: function() {
            let data = this.getPortfolios.filter((v,k)=>{
@@ -92,16 +79,22 @@ export default {
         deletConstituentsAction:      'deletConstituentsAction',   
         rebalanceConstituentsAction:      'rebalanceConstituentsAction',   
       }),
-      handleChange(evt, data){
+      handleInput(evt, data){
         let {value} = evt.target;
         let router_id = this.$route.params.id;  
         if(value == "" || parseFloat(value) <= 100){
         this.updateWeightAction({router_id, value, data});          
-        }else{
-          evt.preventDefault();
-          //alert("value should be between 0 to 100");
         }
       },
+     onkeypress(evt) {
+      let {value} = evt.target;
+       evt = (evt) ? evt : window.event;
+      let charCode = (evt.which) ? evt.which : evt.keyCode;
+      let keyEventValue = parseFloat(value + String.fromCharCode(charCode));   
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46 || (keyEventValue > 100)) {      
+        evt.preventDefault();
+      }
+    },
       updateValue(data, type){
         let {weight} = data
         let router_id = this.$route.params.id;                
@@ -123,15 +116,6 @@ export default {
         let router_id = this.$route.params.id; 
         this.updateLockAction({data, type, router_id});
       },
-     isNumber(evt) {
-       evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {      
-        evt.preventDefault();
-      }else {
-        return true;
-      }
-    },
       getTotalPercent(data, value){
          let result =  _.sumBy(data, function(o) { 
           return ((o[value]) ? parseFloat(o[value]) : 0);
