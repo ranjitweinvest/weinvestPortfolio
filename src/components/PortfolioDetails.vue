@@ -28,9 +28,9 @@
                     <td><button v-show="im.lock" @click="updateLock(im,false)"><i class="fas fa-lock-open"></i></button><button v-show="!im.lock" @click="updateLock(im,true)"><i class="fas fa-lock"></i></button></td>
                     <td>{{im.model_weight}}%</td>
                     <td>
-                      <button v-show="!im.lock" :disabled="im.weight > 99" @click="updateValue(im, 'inc')"><i class="fas fa-plus-square"></i></button>
+                      <button :disabled="im.weight > 99 || im.lock" @click="updateValue(im, 'inc')" :class="{'button-disable': im.lock}"><i class="fas fa-plus-square"></i></button>
                       <input :disabled="im.lock" :value="im.weight" @keypress="onkeypress($event)" @input="handleInput($event, im)" />
-                      <button v-show="!im.lock" :disabled="im.weight < 1" @click="updateValue(im, 'dec')"><i class="fas fa-minus-square" ></i></button> %</td>
+                      <button :disabled="im.weight < 1 || im.lock" @click="updateValue(im, 'dec')" :class="{'button-disable': im.lock}"><i class="fas fa-minus-square" ></i></button> %</td>
                 </tr>
             </tbody>
         </table>
